@@ -145,6 +145,388 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/06/30/JSP-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/lucas.github.io/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/06/30/JSP-05/" class="post-title-link" itemprop="url">JSP-05</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-30 17:06:10 / 修改时间：17:07:11" itemprop="dateCreated datePublished" datetime="2022-06-30T17:06:10+08:00">2022-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="2019903653-潘明飞"><a href="#2019903653-潘明飞" class="headerlink" title="2019903653 潘明飞"></a>2019903653 潘明飞</h3><ol>
+<li><p>JSP的forward动作标签，和response.sendRedirect()方法的异同点。</p>
+<p>（1）介绍Forward和sendRedirect<br><strong>forward</strong><br>这种方式是在 服务器端作的重定向。 服务器往client发送数据的过程是这样的： 服务器在 向客户端发送数据之前，是先将数据输出到缓冲区，然后将缓冲区中数据发送给client端。什么时候将缓冲区里的数据发送给client端呢？（1）当对 来自client的request处理完，并把所有数据输出到缓冲区，（2）当缓冲区满，（3）在程序中调用缓冲区的输出方法out.flush()或 response.flushbuffer()，web container才将缓冲区中的数据发送给client。<br>这种重定向方式是利用 服务器端的缓冲区机制，在把缓冲区的数据发送到客户端之前，原来的数据不发送，将执行转向重定向页面，发送重定向页面的数据，重定向调用页的数据将被清除。如果在之前有很多输出，前面的输出已使缓冲区满，将自动输出到客户端，那么这种重定向方式将不起作用，这一点应该特别注意。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request,HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException,IOException</span><br><span class="line">&#123;</span><br><span class="line">response.setContentType(<span class="string">&quot;text/html; charset=UTF-8&quot;</span>);</span><br><span class="line"><span class="type">ServletContext</span> <span class="variable">sc</span> <span class="operator">=</span> getServletContext();</span><br><span class="line"><span class="type">RequestDispatcher</span> <span class="variable">rd</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">rd = sc.getRequestDispatcher(<span class="string">&quot;/index.jsp&quot;</span>);</span><br><span class="line">rd.forward(request, response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>​     <strong>sendRedirect</strong><br>这种方式是在客户端作的重定向处理。该方法通过修改HTTP协议的HEADER部分,对浏览器下达重定向指令的，让浏览器对在location中指定的 URL提出请求，使浏览器显示重定向网页的内容。该方法可以接受绝对的或相对的URLs。如果传递到该方法的参数是一个相对的URL，那么Web container在将它发送到客户端前会把它转换成一个绝对的URL。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request,HttpServletResponse response)</span> <span class="keyword">throws</span> ServletException,IOException</span><br><span class="line">&#123;</span><br><span class="line">response.setContentType(<span class="string">&quot;text/html; charset=UTF-8&quot;</span>);</span><br><span class="line">response.sendRedirect(<span class="string">&quot;/index.jsp&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2)  区别.<br>1、forward重定向是在容器内部实现的同一个Web应用程序的重定向，所以forward方法只能重定向到同一个Web应用程序中的一个资源，重定向后浏览器地址栏URL不变，而sendRedirect方法可以重定向到任何URL， 因为这种方法是修改http头来实现的，URL没什么限制，重定向后浏览器地址栏URL改变。<br>2、forward重定向将原始的HTTP请求对象（request）从一个servlet实例传递到另一个实例，而采用sendRedirect方式两者不是同一个application。<br>3、基于第二点，参数的传递方式不一样。forward的form参数跟着传递，所以在第二个实例中可以取得HTTP请求的参数。sendRedirect只能通过链接传递参数，response.sendRedirect(“login.jsp?param1&#x3D;a”)。<br>4、sendRedirect能够处理相对URL，自动把它们转换成绝对URL，如果地址是相对的，没有一个‘&#x2F;’，那么Web container就认为它是相对于当前的请求 URI的。比如，如果为response.sendRedirect(“login.jsp”)，则会从当前servlet 的 URL路径下找login.jsp： <a target="_blank" rel="noopener" href="http://10.1.18.8:8081/dms/servlet/Servlet">http://10.1.18.8:8081/dms/servlet/Servlet</a> 重定向的URL: <a target="_blank" rel="noopener" href="http://10.1.18.8:8081/dms/servlet/login.jsp%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%BAresponse.sendRedirect(&quot;/login.jsp&quot;)%E5%88%99%E4%BC%9A%E4%BB%8E%E5%BD%93%E5%89%8D%E5%BA%94%E7%94%A8%E5%BE%84%E4%B8%8B%E6%9F%A5%E6%89%BE">http://10.1.18.8:8081/dms/servlet/login.jsp，如果为response.sendRedirect(&quot;/login.jsp&quot;)则会从当前应用径下查找</a> url:<a target="_blank" rel="noopener" href="http://10.1.18.8:8081/login.jsp%E3%80%82%E8%80%8Cforward%E4%B8%8D%E8%83%BD%E8%BF%99%E6%A0%B7%E5%A4%84%E7%90%86%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E3%80%82">http://10.1.18.8:8081/login.jsp。而forward不能这样处理相对路径。</a></p>
+</li>
+<li><p>1970-01-01 是什么特殊的时间点吗？</p>
+<p>最初计算机操作系统是32位，而时间也是用32位表示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Integer.MAX_VALUE);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2147483647</span><br></pre></td></tr></table></figure>
+
+
+<p>Integer在JAVA内用32位表 示，因此32位能表示的最大值是2147483647。<br>另外1年365天的总秒数是31536000，<br>2147483647&#x2F;31536000 &#x3D; 68.1</p>
+<p>也就是说32位能表示的最长时间是68年，而实际上到2038年01月19日03时14分07秒，便会到达最大时间，过了这个时间点，所有32位操作系统时间便会变为<br>10000000 00000000 00000000 00000000</p>
+<p>也就是1901年12月13日20时45分52秒，这样便会出现时间回归的现象，很多软件便会运行异常了。</p>
+<p>到这里，我想问题的答案已经出来了:</p>
+<p>因为用32位来表示时间的最大间隔是68年，而最早出现的UNIX操作系统考虑到计算机产生的年代和应用的时限综合取了1970年1月1日作为UNIX TIME的纪元时间(开始时间)，而java自然也遵循了这一约束。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/06/30/JSP-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/lucas.github.io/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/06/30/JSP-04/" class="post-title-link" itemprop="url">JSP-04</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-30 17:06:03 / 修改时间：17:06:59" itemprop="dateCreated datePublished" datetime="2022-06-30T17:06:03+08:00">2022-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>2019903653 潘明飞 0720</p>
+<h3 id="1-调查一下-html，xml，xhtml，json-是什么？有什么关系？"><a href="#1-调查一下-html，xml，xhtml，json-是什么？有什么关系？" class="headerlink" title="1. 调查一下 html，xml，xhtml，json 是什么？有什么关系？"></a>1. 调查一下 html，xml，xhtml，json 是什么？有什么关系？</h3><p><strong>HTML</strong> 不是一门编程语言，而是一种用于定义内容结构的<em>标记语言</em>。HTML 由一系列的<strong>元素</strong>组成，这些元素可以用来包围不同部分的内容，使其以某种方式呈现或者工作。 一对标签（ tags）可以为一段文字或者一张图片添加超链接，将文字设置为斜体，改变字号，等等</p>
+<p><strong>XML</strong>：</p>
+<ul>
+<li><p><strong>XML</strong> 指可扩展标记语言（<em>EX</em>tensible <em>M</em>arkup <em>L</em>anguage）</p>
+</li>
+<li><p><strong>XML</strong> 是一种<em>标记语言</em>，很类似 HTML</p>
+</li>
+<li><p><strong>XML</strong> 的设计宗旨是<em>传输数据</em>，而非显示数据</p>
+</li>
+<li><p><strong>XML</strong> 标签没有被预定义。您需要<em>自行定义标签</em>。</p>
+</li>
+<li><p><strong>XML</strong> 被设计为具有<em>自我描述性</em>。</p>
+</li>
+<li><p><strong>XML</strong> 是 <em>W3C 的推荐标准</em></p>
+</li>
+</ul>
+<p> <strong>XHTML ：</strong></p>
+<ul>
+<li><p><strong>XHTML</strong> 指可扩展超文本标签语言（EXtensible HyperText Markup Language）。</p>
+</li>
+<li><p><strong>XHTML</strong> 的目标是取代 HTML。</p>
+</li>
+<li><p><strong>XHTML</strong> 与 HTML 4.01 几乎是相同的。</p>
+</li>
+<li><p><strong>XHTML</strong> 是更严格更纯净的 HTML 版本。</p>
+</li>
+<li><p><strong>XHTML</strong> 是作为一种 XML 应用被重新定义的 HTML。</p>
+</li>
+<li><p><strong>XHTML</strong> 是一个 W3C 标准。</p>
+</li>
+</ul>
+<p><strong>JSON：</strong></p>
+<ul>
+<li>JSON 指的是 JavaScript 对象表示法（JavaScript Object Notation）</li>
+<li>JSON 是轻量级的文本数据交换格式</li>
+<li>JSON 独立于语言：JSON 使用 Javascript语法来描述数据对象，但是 JSON 仍然独立于语言和平台。JSON 解析器和 JSON 库支持许多不同的编程语言。 目前非常多的动态（PHP，JSP，.NET）</li>
+<li>编程语言都支持JSON。</li>
+<li>JSON 具有自我描述性，更易理解</li>
+</ul>
+<p><strong>XML 与 HTML 的主要差异</strong></p>
+<p>  XML 不是 HTML 的替代。</p>
+<p>  XML 和 HTML 为不同的目的而设计：</p>
+<p>  XML 被设计为传输和存储数据，其焦点是数据的内容。</p>
+<p>  HTML 被设计用来显示数据，其焦点是数据的外观。</p>
+<p>  HTML 旨在显示信息，而 XML 旨在传输信息。</p>
+<p><strong>目前选用XHTML的原因？</strong></p>
+<p>XHTML 是 HTML 与 XML（扩展标记语言）的结合物。</p>
+<p>XHTML 包含了所有与 XML 语法结合的 HTML 4.01 元素。XML 是一种标记化语言，其中所有的东西都要被正确的标记，以产生形式良好的文档。</p>
+<p>XML 用来描述数据，而 HTML 则用来显示数据。</p>
+<p>今天的市场中存在着不同的浏览器技术，某些浏览器运行在计算机中，某些浏览器则运行在移动电话和手持设备上。而后者没有能力和手段来解释糟糕的标记语言。</p>
+<p>因此，通过把 HTML 和 XML 各自的长处加以结合，我们得到了在现在和未来都能派上用场的标记语言 - XHTML。</p>
+<p>XHTML 可以被所有的支持 XML 的设备读取，同时在其余的浏览器升级至支持 XML 之前，XHTML 使我们有能力编写出拥有良好结构的文档，这些文档可以很好地工作于所有的浏览器，并且可以向后兼容。</p>
+<h3 id="2-html5-新增加了什么？"><a href="#2-html5-新增加了什么？" class="headerlink" title="2.html5 新增加了什么？"></a>2.html5 新增加了什么？</h3><p><strong>H5 新增特性</strong></p>
+<ul>
+<li>Canvas、SVG – 用于绘画的元素，canvas绘制的图片会失真而SVG绘制的不会失真。</li>
+<li>video、audio – 用于播放视频和音频的媒体。</li>
+<li>Drag 、Drop – 用于拖放的 。</li>
+<li>Geolocation – 用于获取地理位置。</li>
+<li>localStorage、sessionStorage – 用于本地离线存储。</li>
+<li>webSQL、IndexDB – 前端数据库操作，由于安全性极低，目前h5已放弃。</li>
+<li>web Worker – 独立于其他脚本，不影响页面性能运行在后台的javascript。</li>
+<li>webSocket – 单个TCP连接上进行全双工通讯的协议。</li>
+<li>新的特殊内容元素 – 如：article、footer、header、nav、section。</li>
+<li>新的表单控件 – 如：date、time、email、url、search。</li>
+</ul>
+<p><strong>H5 的优缺点</strong><br>             优势：</p>
+<ul>
+<li>提高可用性和可维护性，改进了用户体验。</li>
+<li>新增语义化标签，有助于开发人员定义清晰的结构。</li>
+<li>可以播放视频音频，增加多媒体元素。</li>
+<li>利用h5动画，友好地替代了flash和silverlight。</li>
+<li>爬虫抓取网站的时候，对于SEO很友好。</li>
+<li>H5被大量应用于移动应用和游戏开发。</li>
+<li>可移植性好。<br>缺点：</li>
+<li>现在大多数高版本浏览器都支持html5，但是少部分的低版本浏览器目前不支持html5，因新标签的引入，各浏览器之间将缺少一种统一的数据描述格式，造成用户体验不佳。</li>
+</ul>
+<h3 id="3-响应式web设计-（Responsive-Web-Design）是什么意思？-（选做题）"><a href="#3-响应式web设计-（Responsive-Web-Design）是什么意思？-（选做题）" class="headerlink" title="3.响应式web设计 （Responsive Web Design）是什么意思？ （选做题）"></a>3.响应式web设计 （Responsive Web Design）是什么意思？ （选做题）</h3><p>响应式网页设计 （英语：Responsive web design，通常縮寫为 RWD）是一种网页设计的技術做法，该设计可使网站在多种瀏覽设备（从桌面电脑显示器到移动电话或其他流動產品裝置）上阅读和导航，同时减少缩放、平移和滚动。 </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/06/30/JSP-03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/lucas.github.io/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/06/30/JSP-03/" class="post-title-link" itemprop="url">JSP-03</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-30 17:05:57 / 修改时间：17:06:48" itemprop="dateCreated datePublished" datetime="2022-06-30T17:05:57+08:00">2022-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="0720-潘明飞-2019903653"><a href="#0720-潘明飞-2019903653" class="headerlink" title="0720 潘明飞 2019903653"></a>0720 潘明飞 2019903653</h5><h2 id="1-Java-和JavaScript之间有什么关系"><a href="#1-Java-和JavaScript之间有什么关系" class="headerlink" title="1. Java 和JavaScript之间有什么关系"></a>1. Java 和JavaScript之间有什么关系</h2><p><strong>Java</strong>和<strong>JavaScript</strong>都是编程语言，但他俩其实也完全不一样，<strong>JavaScript</strong>是个脚本语言，Java是跨平台语言，他的执行效率要比JavaScript高，JavaScript是需要编译器解释来执行的，而且只能运行在浏览器中。<strong>Java</strong>主要是做企业级的应用开发，或者像这种后端开发之类的。JavaScript只能做前端开发，但是后来出了<strong>node.js</strong>或者其他的一些，<strong>JavaScript</strong>也能写后端开发。<br>       <strong>它们的相同之处包括：</strong>       </p>
+<ul>
+<li>它们的语法和 C 语言都很相似；</li>
+<li>它们都是面向对象的（虽然实现的方式略有不同）；</li>
+<li>JavaScript 在设计时参照了 Java 的命名规则；</li>
+</ul>
+<p><strong>它们的不同之处包括：</strong>       </p>
+<ul>
+<li>JavaScript 是动态类型语言，而 Java 是静态类型语言；</li>
+<li>JavaScript 是弱类型的，Java 属于强类型；</li>
+<li>JavaScript 的面向对象是基于原型的（prototype-based）实现的，Java 是基于类（class-based）的。</li>
+</ul>
+<h2 id="2-Servlet是在哪里进行解释的，服务器上还是浏览器上？"><a href="#2-Servlet是在哪里进行解释的，服务器上还是浏览器上？" class="headerlink" title="2.  Servlet是在哪里进行解释的，服务器上还是浏览器上？"></a>2.  Servlet是在哪里进行解释的，服务器上还是浏览器上？</h2><p><strong>Java Servlet</strong> 是运行在 <strong>Web</strong> 服务器或应用服务器上的程序，它是作为来自 <strong>Web</strong> 浏览器或其他 HTTP 客户端的请求和 <strong>HTTP</strong> 服务器上的数据库或应用程序之间的中间层。</p>
+<p>使用 <strong>Servlet</strong>，您可以收集来自网页表单的用户输入，呈现来自数据库或者其他源的记录，还可以动态创建网页。</p>
+<p>Java Servlet 通常情况下与使用 <strong>CGI</strong>（Common Gateway Interface，公共网关接口）实现的程序可以达到异曲同工的效果。但是相比于 <strong>CGI</strong>，<strong>Servlet</strong> 有以下几点优势：</p>
+<ul>
+<li>性能明显更好。</li>
+<li><strong>Servlet</strong> 在 Web 服务器的地址空间内执行。这样它就没有必要再创建一个单独的进程来处理每个客户端请求。</li>
+<li><strong>Servlet</strong> 是独立于平台的，因为它们是用 Java 编写的。</li>
+<li>服务器上的 Java 安全管理器执行了一系列限制，以保护服务器计算机上的资源。因此，<strong>Servlet</strong> 是可信的。</li>
+<li>Java 类库的全部功能对 <strong>Servlet</strong> 来说都是可用的。它可以通过 <strong>sockets</strong> 和 <strong>RMI</strong> 机制与 <strong>applets</strong>、数据库或其他软件进行交互。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/06/30/JSP-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/lucas.github.io/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/06/30/JSP-02/" class="post-title-link" itemprop="url">JSP-02</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-06-30 17:05:53 / 修改时间：17:06:36" itemprop="dateCreated datePublished" datetime="2022-06-30T17:05:53+08:00">2022-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>0720潘明飞2019903653</p>
+<h4 id="1-调查总结HTTP请求方式中的POST与GET的异同点"><a href="#1-调查总结HTTP请求方式中的POST与GET的异同点" class="headerlink" title="1.  调查总结HTTP请求方式中的POST与GET的异同点"></a>1.  调查总结HTTP请求方式中的POST与GET的异同点</h4><ol>
+<li><p>Get和Post请求本质上都是TCP链接，并无差别。<br>&amp;ensp;但是由于HTTP的规定和浏览器&#x2F;服务器的限制，导致他们在应用过程中体现出一些不同。</p>
+</li>
+<li><p>Get请求可以在request body传参数，Post请求也可以给URL带上参数。<br>&amp;ensp; 如果你用GET服务，在request body偷偷藏了数据，不同服务器的处理方式也是不同的，有些服务器会帮你卸货，读出数据，有些服务器直接忽略，所以，虽然GET可以带request body，也不能保证一定能被接收到哦。</p>
+</li>
+<li><p>HTTP协议明确地指出了，HTTP头和Body都没有长度的要求。而对于URL长度上的限制，有两&amp;ensp;方面的原因造成：(1)浏览器(2)服务器<br>&amp;ensp;业界不成文的规定是，(大多数)浏览器通常都会限制url长度在2K个字节，而（大多数）服务器最多处理64K大小的url。超过的部分，不会处理。</p>
+</li>
+<li><p>GET产生一个TCP数据包；POST产生两个TCP数据包。<br>&amp;ensp;对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；<br>&amp;ensp;而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。<br>&amp;ensp;打个比方，汽车送货的时候，GET只需要汽车跑一趟就把货送到了，而POST得跑两趟，第一趟，先去和服务器打个招呼“嗨，我等下要送一批货来，你们打开门迎接我”，然后再回头把货送过去。<br>&amp;ensp;注：并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次。</p>
+</li>
+</ol>
+<h4 id="2-web开发相关脚本语言"><a href="#2-web开发相关脚本语言" class="headerlink" title="2.   web开发相关脚本语言"></a>2.   web开发相关脚本语言</h4><p>为了提高WEB项目的整体性能，提高人机交互的友好界面，网页的脚本语言是很有用处的，有的时候可以解决很大的难题或提高程序的性能和应用性。</p>
+<p>网页脚本语言的执行都是在客户端执行的，速度很很快，并且大多的操作与服务器没有交互运算，所以在一些应用中非常理想。在设计WEB项目的应用中，网页的脚本语言起着不能忽视的作用，所以如果设计WEB项目的应用中，对JavaScript应有一定的了解。</p>
+<ol>
+<li><p><strong>JavaScript</strong>（简称“JS”） 是一种具有函数优先的轻量级，解释型或即时编译型的编程语言。虽然它是作为开发Web页面的脚本语言而出名，但是它也被用到了很多非浏览器环境中，JavaScript 基于原型编程、多范式的动态脚本语言，并且支持面向对象、命令式、声明式、函数式编程范式。</p>
+</li>
+<li><p><strong>TypeScript</strong>是微软开发的一个开源的编程语言，通过在JavaScript的基础上添加静态类型定义构建而成。TypeScript通过TypeScript编译器或Babel转译为JavaScript代码，可运行在任何浏览器，任何操作系统。</p>
+</li>
+<li><p><strong>VBScript</strong>是Visual Basic Script的简称，即 Visual Basic 脚本语言，有时也被缩写为VBS。它是一种微软环境下的轻量级的解释型语言，它使用COM组件、WMI、WSH、ADSI访问系统中的元素，对系统进行管理。同时它又是asp动态网页默认的编程语言，配合asp内建对象和ADO对象，用户很快就能掌握访问数据库的asp动态网页开发技术。</p>
+</li>
+<li><p><strong>ECMAScript</strong>是一种由Ecma国际（前身为欧洲计算机制造商协会，European Computer Manufacturers Association）通过ECMA-262标准化的脚本程序设计语言。这种语言在万维网上应用广泛，它往往被称为JavaScript或JScript，所以它可以理解为是JavaScript的一个标准,但实际上后两者是ECMA-262标准的实现和扩展。</p>
+</li>
+<li><p><strong>JScript</strong>是由微软公司开发的活动脚本语言，是微软对ECMAScript规范的实现。JScript最初是随Internet Explorer 3.0于1996年8月发布。在网络程序员谈论Internet Explorer中的JavaScript的时候，他们实际上是指JScript。和其他活动脚本一样，它后来也被Windows Script Host（WSH）和Active Server Pages所支持。典型的JScript源文件使用的扩展名是.js。JScript最新的版本是基于尚未定稿的ECMAScript4.0版规范的JScript .NET，并且可以在微软的.Net环境下编译。JScript在ECMA的规范上增加了许多特性。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/06/30/JSP-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -385,7 +767,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/lucas.github.io/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
