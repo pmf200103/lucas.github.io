@@ -145,6 +145,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/07/19/%E4%B8%80%E5%85%83%E5%87%BD%E6%95%B0%E7%A7%AF%E5%88%86%E5%AD%A6%E9%87%8D%E8%A6%81%E5%AE%9A%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/lucas.github.io/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/07/19/%E4%B8%80%E5%85%83%E5%87%BD%E6%95%B0%E7%A7%AF%E5%88%86%E5%AD%A6%E9%87%8D%E8%A6%81%E5%AE%9A%E7%90%86/" class="post-title-link" itemprop="url">一元函数积分学重要定理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-07-19 12:18:33 / 修改时间：15:09:34" itemprop="dateCreated datePublished" datetime="2022-07-19T12:18:33+08:00">2022-07-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一、有关-f-x-和它的积分可导和连续的定理"><a href="#一、有关-f-x-和它的积分可导和连续的定理" class="headerlink" title="一、有关$f(x)$和它的积分可导和连续的定理"></a>一、有关$f(x)$和它的积分可导和连续的定理</h3><p>(1)$F(x)$可导必定连续</p>
+<script type="math/tex; mode=display">
+F(x)=\int _{x_{0}} ^{x} f(t) dt \quad 是永远连续且过定点(x_{0},0) 的函数；</script><p>(2) $F’(x)$可导不一定连续，根据以下条件判断一个点是否可导，根据导数的定义来计算</p>
+<script type="math/tex; mode=display">
+F(x)= \int ^{x} _{a} f(t)dt \quad 在x=c点</script><script type="math/tex; mode=display">
+\left\{
+\begin{aligned}
+& 可导,且F'(c)=f(c),若x=c是f(x)的连续点\\
+&可导,且F'(c)=\lim_{x \to c}f(x),若x=c是f(x)的可去间断点 \\
+&不可导，若x=c是f(x) 的跳跃间断点
+\end{aligned}
+\right. \quad</script><h3 id="二、有关-f-x-和-int-0-x-f-t-dt-的奇偶性的定理"><a href="#二、有关-f-x-和-int-0-x-f-t-dt-的奇偶性的定理" class="headerlink" title="二、有关$f(x)$和$\int_{0}^{x}f(t)dt$的奇偶性的定理"></a>二、有关$f(x)$和$\int_{0}^{x}f(t)dt$的奇偶性的定理</h3><p>（1）若$f(x)$在$[-a,a]$上是连续的奇函数，则$\int ^{x} _{0} f(t)dt $为偶函数；</p>
+<p>（2）若$f(x)$在$[-a,a]$上是连续的偶函数，则$\int ^{x} _{0} f(t)dt $为奇函数；</p>
+<p>（3）若$f(x)$在$[-a,a]$上是连续的奇函数，则$\int ^{x} _{a} f(t)dt $为偶函数$(a \neq 0)$；</p>
+<p>（4）若$f(x)$在$[-a,a]$上是连续的偶函数，则$\int ^{x} _{a} f(t)dt $为非奇非偶函数$(a \neq 0)$；</p>
+<p>$（当且仅当\int_{-a}^{a}f(t)dt=0时\int ^{x} _{a} f(t)dt 为奇函数）$</p>
+<p>三、有关周期性的定理</p>
+<p>​    若$f(x)$在$(-\infin,+\infin)$上连续且以$T$为周期，则$\int _{a}^{x}f(t) dt -\frac{\int_{0} ^{T} f(t)dt }{T}x$必以$T$为周期。</p>
+<script type="math/tex; mode=display">
+\begin{aligned} 证明：记\phi(x) &=\int _{a}^{x}f(t) dt  -\frac{\int_{0} ^{T} f(t)dt }{T}x,于是\phi (x+T)-\phi(x)  \\
+&=\int _{a}^{x+T}f(t) dt - \frac{\int_{0} ^{T} f(t)dt }{T}(x+T)-[\int _{a}^{x}f(t) dt-\frac{\int_{0} ^{T} f(x)dx }{T}x] \\
+&=\int _{x}^{x+T}f(t) dt -\frac{\int_{0} ^{T} f(x)dx }{T}\cdot T=\int _{0}^{T}f(t) dt-\int _{0}^{T}f(x) dx=0
+\end{aligned}</script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://pmf200103.github.io/lucas.github.io/2022/07/16/%E4%B8%AD%E5%80%BC%E5%AE%9A%E7%90%86%E6%9E%84%E9%80%A0%E8%BE%85%E5%8A%A9%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -860,7 +940,7 @@ f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}x^{2}+...+\frac{f^{(n)}}{n!}x^{n}+\omicron(x^{
       <div class="site-state-item site-state-posts">
           <a href="/lucas.github.io/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
