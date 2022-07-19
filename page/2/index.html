@@ -20,35 +20,28 @@
     var CONFIG = {"hostname":"pmf200103.github.io","root":"/lucas.github.io/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Servlet原理：  ​    Web容器在收到客户端发送过来的请求之后会生成Request和ResPonse对象，在第一次运行的时候会生成servlet响应的方法，servlet在使用时会调用servlet接口的service方法，在处理请求时request会从servlet接口的service方法中读取信息，并且把请求之后的响应交给response，response就可以返回到web容器中。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="servlet原理">
-<meta property="og:url" content="https://pmf200103.github.io/lucas.github.io/2022/07/04/servlet/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="https://pmf200103.github.io/lucas.github.io/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Servlet原理：  ​    Web容器在收到客户端发送过来的请求之后会生成Request和ResPonse对象，在第一次运行的时候会生成servlet响应的方法，servlet在使用时会调用servlet接口的service方法，在处理请求时request会从servlet接口的service方法中读取信息，并且把请求之后的响应交给response，response就可以返回到web容器中。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com//3334image-20220704150013187.png">
-<meta property="article:published_time" content="2022-07-04T06:39:21.000Z">
-<meta property="article:modified_time" content="2022-07-14T07:03:41.199Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="web开发技术">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com//3334image-20220704150013187.png">
 
-<link rel="canonical" href="https://pmf200103.github.io/lucas.github.io/2022/07/04/servlet/">
+<link rel="canonical" href="https://pmf200103.github.io/lucas.github.io/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>servlet原理 | Hexo</title>
+  <title>Hexo</title>
   
 
 
@@ -146,10 +139,9 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -165,9 +157,10 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          servlet原理
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/lucas.github.io/2022/07/04/servlet/" class="post-title-link" itemprop="url">servlet原理</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -197,7 +190,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h2><p>原理：</p>
+          <h2 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h2><p>原理：</p>
 <p><img src="https://xingqiu-tuchuang-1256524210.cos.ap-shanghai.myqcloud.com//3334image-20220704150013187.png" alt="image-20220704150013187"></p>
 <p>​    Web容器在收到客户端发送过来的请求之后会生成Request和ResPonse对象，在第一次运行的时候会生成servlet响应的方法，servlet在使用时会调用servlet接口的service方法，在处理请求时request会从servlet接口的service方法中读取信息，并且把请求之后的响应交给response，response就可以返回到web容器中。</p>
 <p>​    我们自己使用的servlet就实现了这些方法。</p>
@@ -207,34 +200,25 @@
 <p>指定了固有的映射路径优先级最高，如果找不到就会走默认的处理请求；</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--404--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>error<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.kuang.servlet.ErrorServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>error<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
+      
     </div>
 
     
     
     
-
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/lucas.github.io/tags/web%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" rel="tag"># web开发技术</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item"></div>
-      <div class="post-nav-item">
-    <a href="/lucas.github.io/2022/07/04/servletContext/" rel="next" title="servletContext">
-      servletContext <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/lucas.github.io/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/lucas.github.io/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 
@@ -286,7 +270,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet"><span class="nav-number">1.</span> <span class="nav-text">Servlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mapping%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">Mapping问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
